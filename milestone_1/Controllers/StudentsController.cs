@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ namespace milestone_1.Controllers
         {
             return View(await _context.Students.ToListAsync());
         }
-
+        [Authorize(Roles = "admin")]
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -43,12 +44,13 @@ namespace milestone_1.Controllers
             return View(student);
         }
 
+        [Authorize(Roles = "admin")]
         // GET: Students/Create
         public IActionResult Create()
         {
             return View();
         }
-
+        [Authorize(Roles = "admin")]
         // POST: Students/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -64,7 +66,7 @@ namespace milestone_1.Controllers
             }
             return View(student);
         }
-
+        [Authorize(Roles = "admin")]
         // GET: Students/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -80,7 +82,7 @@ namespace milestone_1.Controllers
             }
             return View(student);
         }
-
+        [Authorize(Roles = "admin")]
         // POST: Students/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -115,7 +117,7 @@ namespace milestone_1.Controllers
             }
             return View(student);
         }
-
+        [Authorize(Roles = "admin")]
         // GET: Students/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -133,7 +135,7 @@ namespace milestone_1.Controllers
 
             return View(student);
         }
-
+        [Authorize(Roles = "admin")]
         // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

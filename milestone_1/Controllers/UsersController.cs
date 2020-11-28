@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,13 +21,15 @@ namespace milestone_1.Controllers
         }
 
         // GET: Users
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
-            var studentContext = _context.Users.Include(u => u.Role);
-            return View(await studentContext.ToListAsync());
+            var myDBContext = _context.Users.Include(u => u.Role);
+            return View(await myDBContext.ToListAsync());
         }
 
         // GET: Users/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace milestone_1.Controllers
         }
 
         // GET: Users/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             ViewData["RoleId"] = new SelectList(_context.Roles, "Id", "Id");
@@ -70,6 +74,7 @@ namespace milestone_1.Controllers
         }
 
         // GET: Users/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -123,6 +128,7 @@ namespace milestone_1.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
