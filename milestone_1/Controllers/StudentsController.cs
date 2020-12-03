@@ -20,11 +20,18 @@ namespace milestone_1.Controllers
             _context = context;
         }
 
+        public ActionResult StudentSearch(string name)
+        {
+            var allStudents = _context.Students.Where(a => a.Name.Contains(name)).ToList();
+            return PartialView(allStudents);
+        }
+
         // GET: Students
         public async Task<IActionResult> Index()
         {
             return View(await _context.Students.ToListAsync());
         }
+
         [Authorize(Roles = "admin")]
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
