@@ -1,4 +1,6 @@
-﻿namespace milestone_1.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace milestone_1.Models
 {
     public enum Grade
     {
@@ -7,7 +9,9 @@
     public class Enrollment
     {
         public int EnrollmentID { get; set; }
+        [Required]
         public int CourseID { get; set; }
+        [Required]
         public int StudentID { get; set; }
         public Grade? Grade { get; set; }
 
