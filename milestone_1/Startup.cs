@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using milestone_1.Data;
+using milestone_1.Services;
 
 namespace milestone_1
 {
@@ -38,6 +39,13 @@ namespace milestone_1
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                     options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
+            services.AddDbContext<StudentContext>(options =>
+            {
+                options.UseSqlite("Filename=students.db");
+            });
+            services.AddMvc();
+            services.AddScoped<StudentService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

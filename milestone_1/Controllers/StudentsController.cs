@@ -8,27 +8,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using milestone_1.Data;
 using milestone_1.Models;
+using milestone_1.Services;
 
 namespace milestone_1.Controllers
 {
     public class StudentsController : Controller
     {
         private readonly StudentContext _context;
-
+        private readonly StudentService _studentService;
         public StudentsController(StudentContext context)
         {
             _context = context;
         }
-
+        public StudentsController(StudentService studentService)
+        {
+            _studentService = studentService;
+        }
         public ActionResult StudentSearch(string name)
         {
             var allStudents = _context.Students.Where(a => a.Name.Contains(name)).ToList();
             return PartialView(allStudents);
         }
-
+        public async Task<IActionResult> Search(string text)
+        {
+            var searchedStudents = await _studentService.Search(text);
+            return View("Index", searchedStudents);
+        }
         // GET: Students
         public async Task<IActionResult> Index()
         {
+            ViewBag.Message = "Список студентов";
             return View(await _context.Students.ToListAsync());
         }
 
