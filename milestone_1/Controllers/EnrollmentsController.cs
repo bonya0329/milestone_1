@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ namespace milestone_1.Controllers
         }
 
         // GET: Enrollments/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             ViewData["CourseID"] = new SelectList(_context.Courses, "CourseID", "CourseID");
@@ -63,16 +65,26 @@ namespace milestone_1.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(enrollment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                Enrollment foo = await _context.Enrollments.FirstOrDefaultAsync(w => w.CourseID == enrollment.CourseID && w.StudentID == enrollment.StudentID );
+                if (foo == null)
+                {
+                    ViewData["CourseID"] = new SelectList(_context.Courses, "CourseID", "CourseID", enrollment.CourseID);
+                    ViewData["StudentID"] = new SelectList(_context.Students, "StudentID", "Name", enrollment.StudentID);
+                    _context.Add(enrollment);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Уже существует");
+                }
             }
-            ViewData["CourseID"] = new SelectList(_context.Courses, "CourseID", "CourseID", enrollment.CourseID);
-            ViewData["StudentID"] = new SelectList(_context.Students, "StudentID", "Name", enrollment.StudentID);
+            
             return View(enrollment);
         }
 
         // GET: Enrollments/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -128,6 +140,7 @@ namespace milestone_1.Controllers
         }
 
         // GET: Enrollments/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

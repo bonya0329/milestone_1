@@ -20,10 +20,7 @@ namespace milestone_1.Controllers
         {
             _context = context;
         }
-        public StudentsController(StudentService studentService)
-        {
-            _studentService = studentService;
-        }
+       
         public ActionResult StudentSearch(string name)
         {
             var allStudents = _context.Students.Where(a => a.Name.Contains(name)).ToList();
@@ -41,7 +38,7 @@ namespace milestone_1.Controllers
             return View(await _context.Students.ToListAsync());
         }
 
-        [Authorize(Roles = "admin")]
+        
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -5,23 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - milestone_1</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-            crossorigin="anonymous">
-    </script>
+    <link rel="stylesheet" href="~/css/styles.css" />
+    <link rel="stylesheet" href="~/css/styles-2.css" />
+    <link rel="stylesheet" href="~/css/styles-3.css" />
+    <link rel="stylesheet" href="~/css/styles-4.css" />
+    <link rel="stylesheet" href="~/css/styles-5.css" />
+    <link rel="stylesheet" href="~/css/styles-6.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">milestone_1</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web-based online portal for parents</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-2">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <form method="post" asp-action="Logout" asp-controller="Account">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">@User.Identity.Name : Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a asp-action="Register" asp-controller="Account">Register</a>/</li>
+                            <li class="nav-item"><a asp-action="Login" asp-controller="Account">Login</a></li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav flex-grow-2">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -42,6 +59,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Teachers" asp-action="Index">Teachers</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Enrollments" asp-action="Index">Enrollments</a>
+                            </li>
                         }
                         @if (User.IsInRole("user"))
                         {
@@ -51,28 +71,17 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Enrollments" asp-action="Index">Enrollments</a>
                             </li>
-                        }
-                    </ul>
-                    <ul class="nav navbar-nav navbar-left">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li>
-                                <form method="post" asp-action="Logout" asp-controller="Account">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">@User.Identity.Name : Logout</button>
-                                </form>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Teachers" asp-action="Index">Teachers</a>
                             </li>
                         }
-                        else
-                        {
-                            <li><a asp-action="Register" asp-controller="Account">Register</a>/</li>
-                            <li><a asp-action="Login" asp-controller="Account">Login</a></li>
-                        }
                     </ul>
+
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style="min-height: 400px;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -86,6 +95,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

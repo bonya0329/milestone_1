@@ -45,6 +45,7 @@ namespace milestone_1
             });
             services.AddMvc();
             services.AddScoped<StudentService>();
+            services.AddScoped<StudentInterface, StudentRepository>();
 
         }
 
